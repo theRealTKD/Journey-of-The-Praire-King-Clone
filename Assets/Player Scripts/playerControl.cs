@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class playerControl : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class playerControl : MonoBehaviour
     [SerializeField] private float fireRate = 0.2f; 
     
     private Vector2 moveInput;
-    private Vector2 attackInput; // Hata veren değişkeni buraya ekledik
+    private Vector2 attackInput;
     private float nextFireTime;
 
     // Movement için gelen sinyali dinle
@@ -55,5 +56,23 @@ public class playerControl : MonoBehaviour
         
         // Mermiyi oluştur
         Instantiate(bulletPrefab, transform.position, rotation);
+    }
+    
+    // Update fonksiyonunun dışına, sınıfın içine ekle:
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // Eğer çarptığımız objenin etiketi "Enemy" ise
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        Debug.Log("Öldün!");
+        
+        // Şimdilik en basit yöntem: Sahneyi en baştan yükle (Restart)
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
