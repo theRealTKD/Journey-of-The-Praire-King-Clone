@@ -3,17 +3,23 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     [SerializeField] private float speed = 10f;
-    [SerializeField] private float lifeTime = 3f; // Mermi ekrandan çıkarsa silinsin diye
+    [SerializeField] private float lifeTime = 3f;
+    public float damage = 1f; // Yeni: Hasar değişkeni
 
     void Start()
     {
-        // Mermi doğduğu an 3 saniye sonra yok olması için zamanlayıcı
+        // Mermi doğunca oyuncudaki damageBoost miktarını kendi hasarına aktarır
+        playerControl player = Object.FindAnyObjectByType<playerControl>();
+        if (player != null)
+        {
+            damage *= player.damageBoost;
+        }
+        
         Destroy(gameObject, lifeTime);
     }
 
     void Update()
     {
-        // Mermiyi ileri (sağa doğru) sür
         transform.position += transform.right * speed * Time.deltaTime;
     }
 }

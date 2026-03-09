@@ -4,9 +4,10 @@ using UnityEngine.SceneManagement;
 
 public class playerControl : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private GameObject bulletPrefab; // Mermi şablonu (Inspector'dan sürükle)
-    [SerializeField] private float fireRate = 0.2f; 
+    [SerializeField] private GameObject bulletPrefab; // Mermi şablonu
+    public float moveSpeed = 5f;
+    public float fireRate = 0.2f;
+    public float damageBoost = 1f;
     
     private Vector2 moveInput;
     private Vector2 attackInput;

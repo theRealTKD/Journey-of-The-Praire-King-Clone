@@ -3,6 +3,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private float speed = 2f;
+    [SerializeField] private GameObject xpPrefab; // Inspector'dan XPGem prefabını buraya sürükle
     private Transform player;
 
     void Start()
@@ -25,12 +26,16 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    // Trigger yerine Collision (Çarpışma) kullanıyoruz
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Mermi ile çarpışma kontrolü (Merminin de Is Trigger'ı kapalı olmalı)
         if (collision.gameObject.CompareTag("Bullet"))
         {
+            // Ölmeden hemen önce XP oluştur
+            if (xpPrefab != null)
+            {
+                Instantiate(xpPrefab, transform.position, Quaternion.identity);
+            }
+
             Destroy(collision.gameObject); 
             Destroy(gameObject); 
         }
