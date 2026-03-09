@@ -40,12 +40,6 @@ public class playerControl : MonoBehaviour
     {
         Vector3 direction = new Vector3(moveInput.x, moveInput.y, 0);
         transform.position += direction.normalized * moveSpeed * Time.deltaTime;
-
-        // Sprite Flipping (Karakterin yönü)
-        if (moveInput.x != 0)
-        {
-            transform.localScale = new Vector3(Mathf.Sign(moveInput.x), 1, 1);
-        }
     }
 
     void Shoot()
@@ -58,7 +52,6 @@ public class playerControl : MonoBehaviour
         Instantiate(bulletPrefab, transform.position, rotation);
     }
     
-    // Update fonksiyonunun dışına, sınıfın içine ekle:
     private void OnCollisionEnter2D(Collision2D collision)
     {
         // Eğer çarptığımız objenin etiketi "Enemy" ise

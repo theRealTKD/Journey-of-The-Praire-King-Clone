@@ -13,18 +13,15 @@ public class EnemySpawner : MonoBehaviour
     }
 
     void SpawnEnemy()
-    {
-        // Rastgele bir açı seç (0-360 derece)
-        float angle = Random.Range(0f, Mathf.PI * 2);
-        
-        // Bu açıya göre ekranın dışında bir nokta hesapla
-        Vector3 spawnPos = new Vector3(
-            Mathf.Cos(angle) * spawnDistance,
-            Mathf.Sin(angle) * spawnDistance,
-            0
-        );
+{
+    float angle = Random.Range(0f, Mathf.PI * 2);
+    
+    Vector3 spawnPos = new Vector3(
+        Mathf.Cos(angle) * spawnDistance,
+        Mathf.Sin(angle) * spawnDistance,
+        0
+    );
 
-        // Düşmanı o noktada oluştur
-        Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
-    }
+    Instantiate(enemyPrefab, transform.position + spawnPos, Quaternion.identity);
+}
 }

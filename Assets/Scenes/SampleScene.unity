@@ -129,6 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 380735385}
   - component: {fileID: 380735384}
+  - component: {fileID: 380735386}
   m_Layer: 0
   m_Name: EnemySpawner
   m_TagString: Untagged
@@ -149,8 +150,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   enemyPrefab: {fileID: 7495544180249146763, guid: 25c4cbba3bb184142a56c7e46c18d94d, type: 3}
-  spawnRate: 0.1
-  spawnDistance: 10
+  spawnRate: 0.5
+  spawnDistance: 12
 --- !u!4 &380735385
 Transform:
   m_ObjectHideFlags: 0
@@ -166,6 +167,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &380735386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 380735383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b488cc88bc5524045b1461c0d7624c9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  playerTransform: {fileID: 1171084841}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,6 +192,7 @@ GameObject:
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
   - component: {fileID: 519420030}
+  - component: {fileID: 519420033}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -303,6 +318,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &519420033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5334cbaa11f7a84380722d483b56564, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  target: {fileID: 1171084841}
+  offset: {x: 0, y: 0, z: -10}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -496,7 +525,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::playerControl
   moveSpeed: 5
   bulletPrefab: {fileID: 2329744826869865588, guid: a9838eb297ac4f3498e14eab7dfdb75a, type: 3}
-  fireRate: 0.4
+  fireRate: 0.1
 --- !u!114 &1171084843
 MonoBehaviour:
   m_ObjectHideFlags: 0
