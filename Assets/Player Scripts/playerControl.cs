@@ -4,18 +4,19 @@ using UnityEngine.SceneManagement;
 
 public class playerControl : MonoBehaviour
 {
-    [SerializeField] private GameObject bulletPrefab; // Mermi şablonu
+    [Header("Ayarlar")]
+    [SerializeField] private GameObject bulletPrefab;
     public float moveSpeed = 5f;
     public float fireRate = 0.2f;
     public float damageBoost = 1f;
-    
+    public float detectionRange = 7f; // Otomatik atış menzili
+
     private Vector2 moveInput;
-    private Vector2 attackInput;
     private float nextFireTime;
 
     [Header("Ses Ayarları")]
-    public AudioSource audioSource; // Hoparlör
-    public AudioClip shootSound;   // Ateş sesi dosyası
+    public AudioSource audioSource;
+    public AudioClip shootSound;
 
     // Movement için gelen sinyali dinle
     public void OnMovement(InputValue value)
@@ -23,22 +24,13 @@ public class playerControl : MonoBehaviour
         moveInput = value.Get<Vector2>();
     }
 
-    // Attack (Ok tuşları) için gelen sinyali dinle
-    public void OnAttack(InputValue value)
-    {
-        attackInput = value.Get<Vector2>();
-    }
+    // Not: OnAttack (Ok tuşları) artık manuel ateş için gerekmiyor, 
+    // ama istersen input sinyalini başka işler için tutabilirsin.
 
     void Update()
     {
         MovePlayer();
-
-        // Ateş etme kontrolü
-        if (attackInput.sqrMagnitude > 0 && Time.time >= nextFireTime)
-        {
-            Shoot();
-            nextFireTime = Time.time + fireRate;
-        }
+        HandleAutoShoot();
     }
 
     void MovePlayer()
@@ -47,16 +39,50 @@ public class playerControl : MonoBehaviour
         transform.position += direction.normalized * moveSpeed * Time.deltaTime;
     }
 
-    void Shoot()
+    void HandleAutoShoot()
     {
-        // Ok tuşlarının açısını hesapla
-        float angle = Mathf.Atan2(attackInput.y, attackInput.x) * Mathf.Rad2Deg;
+        // Ateş etme süresi geldi mi?
+        if (Time.time >= nextFireTime)
+        {
+            GameObject target = FindNearestEnemy();
+
+            if (target != null)
+            {
+                Shoot(target.transform.position);
+                nextFireTime = Time.time + fireRate;
+            }
+        }
+    }
+
+    GameObject FindNearestEnemy()
+    {
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        GameObject nearest = null;
+        float shortestDistance = Mathf.Infinity;
+
+        foreach (GameObject enemy in enemies)
+        {
+            float distance = Vector2.Distance(transform.position, enemy.transform.position);
+            if (distance < shortestDistance && distance <= detectionRange)
+            {
+                shortestDistance = distance;
+                nearest = enemy;
+            }
+        }
+        return nearest;
+    }
+
+    void Shoot(Vector3 targetPos)
+    {
+        // Hedefe giden açıyı hesapla
+        Vector3 shootDir = (targetPos - transform.position).normalized;
+        float angle = Mathf.Atan2(shootDir.y, shootDir.x) * Mathf.Rad2Deg;
         Quaternion rotation = Quaternion.Euler(0, 0, angle);
         
         // Mermiyi oluştur
         Instantiate(bulletPrefab, transform.position, rotation);
 
-        // SES EKLEME: Sesi bir kez çal
+        // SES ÇALDIRMA
         if (audioSource != null && shootSound != null)
         {
             audioSource.PlayOneShot(shootSound);
@@ -65,7 +91,6 @@ public class playerControl : MonoBehaviour
     
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Eğer çarptığımız objenin etiketi "Enemy" ise
         if (collision.gameObject.CompareTag("Enemy"))
         {
             Die();
@@ -75,8 +100,13 @@ public class playerControl : MonoBehaviour
     void Die()
     {
         Debug.Log("Öldün!");
-        
-        // Şimdilik en basit yöntem: Sahneyi en baştan yükle (Restart)
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    // Menzili sahnede görmek için
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, detectionRange);
     }
 }

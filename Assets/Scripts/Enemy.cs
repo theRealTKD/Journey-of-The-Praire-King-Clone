@@ -36,22 +36,23 @@ public class Enemy : MonoBehaviour
         currentHealth = baseHealth + difficultyBonus;
 
         // 4. Renk Kontrolü (5. Dakika = 300 Saniye)
-        if (adilSure >= 120f)
-        {
-            spriteRenderer.color = Color.yellow;
-            speed += 1.5f; // Kırmızılar artık gerçekten korkutucu derecede hızlı!
-        }
-        else
-        if (adilSure >= 300f)
-        {
-            spriteRenderer.color = Color.red;
-            speed += 1.5f; // Kırmızılar artık gerçekten korkutucu derecede hızlı!
-        }
-        else if (adilSure >= 420f)
+
+        if (adilSure >= 420f)
         {
             spriteRenderer.color = Color.black;
-            speed += 1.5f; // Kırmızılar artık gerçekten korkutucu derecede hızlı!
+            speed += 1.5f;
         }
+        else if (adilSure >= 300f)
+        {
+            spriteRenderer.color = Color.red;
+            speed += 1.5f;
+        }
+        else if (adilSure >= 120f)
+        {
+            spriteRenderer.color = Color.yellow;
+            speed += 1.5f;
+        }
+        
     }
 
     void Update()
@@ -81,9 +82,22 @@ public class Enemy : MonoBehaviour
         if (currentHealth <= 0) Die();
     }
 
+    [Header("Düşürme Ayarları")]
+    [Range(0, 100)] public float coinDropChance = 20f; // %20 ihtimal
+    public GameObject coinPrefab;
+
     void Die()
     {
+        // Her zaman XP düşür
         if (xpPrefab != null) Instantiate(xpPrefab, transform.position, Quaternion.identity);
-        Destroy(gameObject); 
+
+        // Şans kontrolü ile Coin düşür
+        float randomRoll = Random.Range(0f, 100f);
+        if (randomRoll <= coinDropChance && coinPrefab != null)
+        {
+            Instantiate(coinPrefab, transform.position, Quaternion.identity);
+        }
+
+        Destroy(gameObject);
     }
 }
