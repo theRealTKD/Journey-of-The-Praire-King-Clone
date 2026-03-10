@@ -12,7 +12,7 @@ public class Bullet : MonoBehaviour
         playerControl player = Object.FindAnyObjectByType<playerControl>();
         if (player != null)
         {
-            damage *= player.damageBoost;
+            damage = 1f * player.damageBoost; // Oyuncunun hasar çarpanını uygula
         }
         
         Destroy(gameObject, lifeTime);

@@ -13,6 +13,10 @@ public class playerControl : MonoBehaviour
     private Vector2 attackInput;
     private float nextFireTime;
 
+    [Header("Ses Ayarları")]
+    public AudioSource audioSource; // Hoparlör
+    public AudioClip shootSound;   // Ateş sesi dosyası
+
     // Movement için gelen sinyali dinle
     public void OnMovement(InputValue value)
     {
@@ -51,6 +55,12 @@ public class playerControl : MonoBehaviour
         
         // Mermiyi oluştur
         Instantiate(bulletPrefab, transform.position, rotation);
+
+        // SES EKLEME: Sesi bir kez çal
+        if (audioSource != null && shootSound != null)
+        {
+            audioSource.PlayOneShot(shootSound);
+        }
     }
     
     private void OnCollisionEnter2D(Collision2D collision)

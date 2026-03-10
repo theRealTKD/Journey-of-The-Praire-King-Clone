@@ -107,6 +107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   speed: 2
+  baseHealth: 1
   xpPrefab: {fileID: 7383264682764695924, guid: 0a452dfb1d17ce14983d72e6db211835, type: 3}
 --- !u!61 &8535542387558461160
 BoxCollider2D:

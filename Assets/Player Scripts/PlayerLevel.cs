@@ -1,42 +1,44 @@
 using UnityEngine;
+using UnityEngine.UI; // Slider için gerekli
 
 public class PlayerLevel : MonoBehaviour
 {
-    [Header("Level Verileri")]
+    public Slider xpSlider; // Inspector'dan XPBar'ı buraya sürükle
     public int currentLevel = 1;
     public int currentXP = 0;
-    public int xpToNextLevel = 100; // İlk seviye için gereken XP
+    public int xpToNextLevel = 100;
+    public UpgradeManager upgradeManager;
+
+    void Start()
+    {
+        UpdateXPBar();
+    }
 
     public void AddXP(int amount)
     {
         currentXP += amount;
-
-        // Level atlama kontrolü (While döngüsü sayesinde birden fazla level birden atlayabilir)
         while (currentXP >= xpToNextLevel)
         {
             LevelUp();
         }
+        UpdateXPBar();
     }
 
-
-    public UpgradeManager upgradeManager; 
+    void UpdateXPBar()
+    {
+        if (xpSlider != null)
+        {
+            xpSlider.maxValue = xpToNextLevel;
+            xpSlider.value = currentXP;
+        }
+    }
 
     void LevelUp()
     {
         currentXP -= xpToNextLevel;
         currentLevel++;
         xpToNextLevel = Mathf.RoundToInt(xpToNextLevel * 1.2f);
-
-        // Paneli aç komutu gönder
-        if (upgradeManager != null)
-        {
-            upgradeManager.OpenUpgradePanel();
-        }
-    }
-
-    void ApplyLevelUpRewards()
-    {
-        // Örnek: Her level atladığında oyuncu biraz hızlansın (Eğer PlayerMovement scriptin varsa)
-        // GetComponent<PlayerMovement>().moveSpeed += 0.5f;
+        
+        if (upgradeManager != null) upgradeManager.OpenUpgradePanel();
     }
 }
