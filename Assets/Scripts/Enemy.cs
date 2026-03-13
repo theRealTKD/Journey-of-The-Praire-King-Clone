@@ -69,19 +69,30 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (collision.gameObject.CompareTag("Bullet"))
+        // Mermi çarptı mı?
+        if (other.CompareTag("Bullet"))
         {
-            Bullet bulletScript = collision.gameObject.GetComponent<Bullet>();
-            float damageTaken = (bulletScript != null) ? bulletScript.damage : 1f;
-
-            TakeDamage(damageTaken);
-            Destroy(collision.gameObject); 
+            Bullet bulletScript = other.GetComponent<Bullet>();
+            if (bulletScript != null)
+            {
+                TakeDamage(bulletScript.damage);
+                // Mermiyi uyut (Havuza gönder)
+                bulletScript.Deactivate(); 
+            }
         }
+        
+        // Oyuncuya çarptı mı? (Düşman oyuncuya değerse oyuncu ölsün)
+        if (other.CompareTag("Player"))
+        {
+            // Oyuncunun içindeki Die() fonksiyonunu çağırabilirsin 
+            // veya direkt sahneyi reload edebilirsin
+            UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+    }
     }
 
-    void TakeDamage(float amount)
+    public void TakeDamage(float amount)
     {
         currentHealth -= amount;
         if (currentHealth <= 0) Die();

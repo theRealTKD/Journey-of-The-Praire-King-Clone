@@ -2,24 +2,38 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    [SerializeField] private float speed = 10f;
-    [SerializeField] private float lifeTime = 3f;
-    public float damage = 1f; // Yeni: Hasar değişkeni
+    public float speed = 10f;
+    public float lifeTime = 3f;
+    public float damage = 1f; // HATAYI ÇÖZEN SATIR
 
-    void Start()
+    void OnEnable()
     {
-        // Mermi doğunca oyuncudaki damageBoost miktarını kendi hasarına aktarır
-        playerControl player = Object.FindAnyObjectByType<playerControl>();
-        if (player != null)
-        {
-            damage = 1f * player.damageBoost; // Oyuncunun hasar çarpanını uygula
-        }
-        
-        Destroy(gameObject, lifeTime);
+        CancelInvoke();
+        Invoke("Deactivate", lifeTime);
     }
 
     void Update()
     {
         transform.position += transform.right * speed * Time.deltaTime;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        // Mermi bir şeye çarptığında havuza dönmeli
+        // Hasar verme işini artık Enemy.cs içindeki Trigger halledecek
+        if (other.CompareTag("Enemy"))
+        {
+            Deactivate();
+        }
+    }
+
+    public void Deactivate()
+    {
+        gameObject.SetActive(false);
+    }
+
+    void OnDisable()
+    {
+        CancelInvoke();
     }
 }

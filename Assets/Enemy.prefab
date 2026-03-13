@@ -109,6 +109,7 @@ MonoBehaviour:
   speed: 2
   baseHealth: 1
   xpPrefab: {fileID: 7383264682764695924, guid: 0a452dfb1d17ce14983d72e6db211835, type: 3}
+  currentHealth: 0
   coinDropChance: 20
   coinPrefab: {fileID: 5866491217884177915, guid: edefe439e69db3c40a50db00ccb55933, type: 3}
 --- !u!61 &8535542387558461160
@@ -141,7 +142,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0

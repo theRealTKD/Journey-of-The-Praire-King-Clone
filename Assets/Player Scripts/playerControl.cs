@@ -5,11 +5,10 @@ using UnityEngine.SceneManagement;
 public class playerControl : MonoBehaviour
 {
     [Header("Ayarlar")]
-    [SerializeField] private GameObject bulletPrefab;
     public float moveSpeed = 5f;
     public float fireRate = 0.2f;
     public float damageBoost = 1f;
-    public float detectionRange = 7f; // Otomatik atış menzili
+    public float detectionRange = 7f;
 
     private Vector2 moveInput;
     private float nextFireTime;
@@ -18,14 +17,10 @@ public class playerControl : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip shootSound;
 
-    // Movement için gelen sinyali dinle
     public void OnMovement(InputValue value)
     {
         moveInput = value.Get<Vector2>();
     }
-
-    // Not: OnAttack (Ok tuşları) artık manuel ateş için gerekmiyor, 
-    // ama istersen input sinyalini başka işler için tutabilirsin.
 
     void Update()
     {
@@ -41,7 +36,6 @@ public class playerControl : MonoBehaviour
 
     void HandleAutoShoot()
     {
-        // Ateş etme süresi geldi mi?
         if (Time.time >= nextFireTime)
         {
             GameObject target = FindNearestEnemy();
@@ -62,11 +56,15 @@ public class playerControl : MonoBehaviour
 
         foreach (GameObject enemy in enemies)
         {
-            float distance = Vector2.Distance(transform.position, enemy.transform.position);
-            if (distance < shortestDistance && distance <= detectionRange)
+            // KRİTİK: Sadece havuzda aktif (yaşayan) olan düşmanları tara!
+            if (enemy.activeInHierarchy) 
             {
-                shortestDistance = distance;
-                nearest = enemy;
+                float distance = Vector2.Distance(transform.position, enemy.transform.position);
+                if (distance < shortestDistance && distance <= detectionRange)
+                {
+                    shortestDistance = distance;
+                    nearest = enemy;
+                }
             }
         }
         return nearest;
@@ -74,24 +72,29 @@ public class playerControl : MonoBehaviour
 
     void Shoot(Vector3 targetPos)
     {
-        // Hedefe giden açıyı hesapla
         Vector3 shootDir = (targetPos - transform.position).normalized;
         float angle = Mathf.Atan2(shootDir.y, shootDir.x) * Mathf.Rad2Deg;
         Quaternion rotation = Quaternion.Euler(0, 0, angle);
-        
-        // Mermiyi oluştur
-        Instantiate(bulletPrefab, transform.position, rotation);
 
-        // SES ÇALDIRMA
+        // Havuzdan mermiyi çek
+        GameObject bullet = BulletPooler.Instance.GetPooledBullet();
+        if (bullet != null) 
+        {
+            bullet.transform.position = transform.position;
+            bullet.transform.rotation = rotation;
+            bullet.SetActive(true);
+        }
+
         if (audioSource != null && shootSound != null)
         {
             audioSource.PlayOneShot(shootSound);
         }
     }
-    
-    private void OnCollisionEnter2D(Collision2D collision)
+
+    // playerControl.cs içinde eski OnCollisionEnter2D'yi bununla değiştir:
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (other.CompareTag("Enemy"))
         {
             Die();
         }
@@ -99,11 +102,9 @@ public class playerControl : MonoBehaviour
 
     void Die()
     {
-        Debug.Log("Öldün!");
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    // Menzili sahnede görmek için
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
