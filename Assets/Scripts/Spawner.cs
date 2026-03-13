@@ -30,23 +30,30 @@ public class EnemySpawner : MonoBehaviour
             
             // Zorluğu artık activeGameTime üzerinden hesaplıyoruz
             currentSpawnRate = Mathf.Max(minSpawnRate, initialSpawnRate - (activeGameTime * difficultyCurve));
-            
+            //currentSpawnRate = 0.001f; //DON'T
             yield return new WaitForSeconds(currentSpawnRate);
         }
     }
 
-    void SpawnEnemy()
-    {
-        // Rastgele bir açı seç
-        float angle = Random.Range(0f, Mathf.PI * 2);
-        
-        // Senin belirlediğin spawnDistance değerini kullanarak pozisyonu hesapla
-        Vector3 spawnPos = new Vector3(
-            Mathf.Cos(angle) * spawnDistance, 
-            Mathf.Sin(angle) * spawnDistance, 
-            0
-        );
+    // EnemySpawner.cs içindeki SpawnEnemy fonksiyonu:
 
-        Instantiate(enemyPrefab, transform.position + spawnPos, Quaternion.identity);
+void SpawnEnemy()
+{
+    // Havuzdan bir düşman iste
+    GameObject enemy = EnemyPooler.Instance.GetPooledEnemy();
+
+    if (enemy != null)
+    {
+        // Doğacağı yeri hesapla (Eski kodundaki mesafe mantığı)
+        float angle = Random.Range(0f, Mathf.PI * 2);
+        Vector3 spawnPos = new Vector3(Mathf.Cos(angle) * spawnDistance, Mathf.Sin(angle) * spawnDistance, 0);
+
+        // Konumunu ve rotasyonunu ayarla
+        enemy.transform.position = transform.position + spawnPos;
+        enemy.transform.rotation = Quaternion.identity;
+
+        // DÜŞMANI UYANDIR!
+        enemy.SetActive(true);
     }
+}
 }

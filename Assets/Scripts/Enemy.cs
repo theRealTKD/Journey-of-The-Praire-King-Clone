@@ -7,52 +7,57 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float baseHealth = 1f; 
     [SerializeField] private GameObject xpPrefab; 
 
-    private float currentHealth;
+    [SerializeField] private float currentHealth;
     private Transform player;
     private SpriteRenderer spriteRenderer;
+    private float initialSpeed; // Başlangıç hızını saklamak için
 
-    void Start()
+    void Awake()
     {
+        // Bir kez çalışması yeterli olanları buraya alalım
         spriteRenderer = GetComponent<SpriteRenderer>();
-
-        // 1. Oyuncuyu Bul
+        initialSpeed = speed; // Orijinal hızı yedekle
+        
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null) player = playerObj.transform;
+    }
 
-        // 2. ADİL SÜREYİ ÇEK (activeGameTime)
-        // Spawner scriptindeki o durabilen süreyi buluyoruz
+    // Havuzdan her çıktığında (SetActive(true) olduğunda) burası çalışır
+    void OnEnable()
+    {
+        // 1. ADİL SÜREYİ ÇEK
         EnemySpawner spawner = Object.FindAnyObjectByType<EnemySpawner>();
         float adilSure = 0f;
+        if (spawner != null) adilSure = spawner.activeGameTime;
 
-        if (spawner != null)
-        {
-            // Spawner'daki activeGameTime değişkenine ulaşıyoruz
-            // (Not: EnemySpawner içinde activeGameTime'ın "public" olduğundan emin ol)
-            adilSure = spawner.activeGameTime; 
-        }
+        // 2. Hızı her seferinde sıfırla (Yoksa her doğuşta üst üste eklenip uçar gider!)
+        speed = initialSpeed;
 
-        // 3. Can Hesaplama (Adil Süreye Göre)
+        // 3. Can ve Zorluk Ayarlarını Güncelle
         float difficultyBonus = Mathf.Floor(adilSure / 60f) * 0.5f;
         currentHealth = baseHealth + difficultyBonus;
 
-        // 4. Renk Kontrolü (5. Dakika = 300 Saniye)
-
+        // 4. Renk ve Hız Kontrolü
         if (adilSure >= 420f)
         {
             spriteRenderer.color = Color.black;
-            speed += 1.5f;
+            speed += 3f;
         }
         else if (adilSure >= 300f)
         {
             spriteRenderer.color = Color.red;
-            speed += 1.5f;
+            speed += 2f;
         }
         else if (adilSure >= 120f)
         {
             spriteRenderer.color = Color.yellow;
             speed += 1.5f;
         }
-        
+        else
+        {
+            // Eğer süre 120'den azsa rengi beyaza (normaline) çekmeyi unutma
+            spriteRenderer.color = Color.white;
+        }
     }
 
     void Update()
@@ -88,16 +93,10 @@ public class Enemy : MonoBehaviour
 
     void Die()
     {
-        // Her zaman XP düşür
+        // XP ve Coin düşürme kodların burada kalsın (Instantiate ile)
         if (xpPrefab != null) Instantiate(xpPrefab, transform.position, Quaternion.identity);
 
-        // Şans kontrolü ile Coin düşür
-        float randomRoll = Random.Range(0f, 100f);
-        if (randomRoll <= coinDropChance && coinPrefab != null)
-        {
-            Instantiate(coinPrefab, transform.position, Quaternion.identity);
-        }
-
-        Destroy(gameObject);
+        // ÖNEMLİ: Obje yok edilmiyor, sadece havuza geri gönderiliyor
+        gameObject.SetActive(false); 
     }
 }
