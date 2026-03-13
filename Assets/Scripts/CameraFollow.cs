@@ -9,7 +9,6 @@ public class CameraFollow : MonoBehaviour
     {
         if (target != null)
         {
-            // Pozisyonu yumuşatma olmadan direkt eşitliyoruz
             transform.position = target.position + offset;
         }
     }

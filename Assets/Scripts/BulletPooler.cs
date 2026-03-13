@@ -8,7 +8,7 @@ public class BulletPooler : MonoBehaviour
     public GameObject bulletPrefab;
     public int poolSize = 50;
     
-    [SerializeField] private List<GameObject> pooledBullets = new List<GameObject>();
+    [SerializeField] private List<GameObject> pooledBullets = new List<GameObject>();//GameObjectleri tutacak bi liste
 
     void Awake()
     {
@@ -31,13 +31,13 @@ public class BulletPooler : MonoBehaviour
         {
             if (!pooledBullets[i].activeInHierarchy)
             {
-                return pooledBullets[i];
+                return pooledBullets[i];//Bulduğumuz aktif olmayan ilk mermiyi döndür
             }
         }
         // Havuz yetmezse yeni mermi oluştur ve ekle
         GameObject obj = Instantiate(bulletPrefab);
         obj.SetActive(false);
-        pooledBullets.Add(obj);
+        pooledBullets.Add(obj);//objeyi listemize ekle
         return obj;
     }
 }

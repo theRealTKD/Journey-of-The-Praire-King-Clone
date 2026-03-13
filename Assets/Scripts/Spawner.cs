@@ -29,8 +29,8 @@ public class EnemySpawner : MonoBehaviour
             SpawnEnemy();
             
             // Zorluğu artık activeGameTime üzerinden hesaplıyoruz
-            currentSpawnRate = Mathf.Max(minSpawnRate, initialSpawnRate - (activeGameTime * difficultyCurve));
-            //currentSpawnRate = 0.001f; //DON'T
+            //currentSpawnRate = Mathf.Max(minSpawnRate, initialSpawnRate - (activeGameTime * difficultyCurve));
+            currentSpawnRate = 0.01f; //DON'T
             yield return new WaitForSeconds(currentSpawnRate);
         }
     }
@@ -39,20 +39,26 @@ public class EnemySpawner : MonoBehaviour
 
 void SpawnEnemy()
 {
-    // Havuzdan bir düşman iste
+    // 1. Havuzdan bir düşman iste
     GameObject enemy = EnemyPooler.Instance.GetPooledEnemy();
 
     if (enemy != null)
     {
-        // Doğacağı yeri hesapla (Eski kodundaki mesafe mantığı)
+        // Konum hesaplama kısımların (Aynen kalsın)
         float angle = Random.Range(0f, Mathf.PI * 2);
         Vector3 spawnPos = new Vector3(Mathf.Cos(angle) * spawnDistance, Mathf.Sin(angle) * spawnDistance, 0);
 
-        // Konumunu ve rotasyonunu ayarla
         enemy.transform.position = transform.position + spawnPos;
         enemy.transform.rotation = Quaternion.identity;
+        
+        // Düşmanın üzerindeki Enemy scriptine ulaşıyoruz
+        Enemy enemyScript = enemy.GetComponent<Enemy>();
+        if (enemyScript != null)
+        {
+            EnemyManager.Instance.AddEnemy(enemyScript);
+        }
 
-        // DÜŞMANI UYANDIR!
+        // 2. DÜŞMANI UYANDIR!
         enemy.SetActive(true);
     }
 }

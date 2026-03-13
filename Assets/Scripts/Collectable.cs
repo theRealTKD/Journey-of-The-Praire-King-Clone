@@ -6,9 +6,9 @@ public class Collectable : MonoBehaviour
     public CollectableType type;
 
     [Header("Hareket Ayarları")]
-    public float pullSpeed = 10f; // Coin için bunu Inspector'dan 15-20 yapabilirsin
+    public float pullSpeed = 10f;
     public float detectionRange = 3f;
-    public int value = 1; // XP miktarı veya Coin değeri
+    public int value = 1;
 
     private Transform player;
     private bool isBeingPulled = false;

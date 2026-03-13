@@ -4,12 +4,12 @@ public class Bullet : MonoBehaviour
 {
     public float speed = 10f;
     public float lifeTime = 3f;
-    public float damage = 1f; // HATAYI ÇÖZEN SATIR
+    public float damage = 1f;
 
     void OnEnable()
     {
-        CancelInvoke();
-        Invoke("Deactivate", lifeTime);
+        CancelInvoke();//önceki lifeTime deaktivasyon çağrısını varsa iptal et
+        Invoke("Deactivate", lifeTime);//Deaktivasyon için yeni bi çağrı kur
     }
 
     void Update()
@@ -19,11 +19,9 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // Mermi bir şeye çarptığında havuza dönmeli
-        // Hasar verme işini artık Enemy.cs içindeki Trigger halledecek
         if (other.CompareTag("Enemy"))
         {
-            Deactivate();
+            Deactivate();//hasarı ve ölmeyi Enemy.cs içerisinde hallediyoruz
         }
     }
 
@@ -34,6 +32,6 @@ public class Bullet : MonoBehaviour
 
     void OnDisable()
     {
-        CancelInvoke();
+        CancelInvoke();//Disable edildi ise Deactivate'yi çağırmasın diye. İhtiyacımız var mı buna emin değilim
     }
 }

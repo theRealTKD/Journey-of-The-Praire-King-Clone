@@ -8,7 +8,9 @@ public class playerControl : MonoBehaviour
     public float moveSpeed = 5f;
     public float fireRate = 0.2f;
     public float damageBoost = 1f;
+    [Header("Otomatik Atış Ayarları")]
     public float detectionRange = 7f;
+    public LayerMask enemyLayer;
 
     private Vector2 moveInput;
     private float nextFireTime;
@@ -50,21 +52,21 @@ public class playerControl : MonoBehaviour
 
     GameObject FindNearestEnemy()
     {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, detectionRange, enemyLayer);
+        
         GameObject nearest = null;
         float shortestDistance = Mathf.Infinity;
 
-        foreach (GameObject enemy in enemies)
+        foreach (var hit in hits)
         {
-            // KRİTİK: Sadece havuzda aktif (yaşayan) olan düşmanları tara!
-            if (enemy.activeInHierarchy) 
+            // Havuzda pasif olanları (ölenleri) es geç
+            if (!hit.gameObject.activeInHierarchy) continue;
+
+            float distance = Vector2.Distance(transform.position, hit.transform.position);
+            if (distance < shortestDistance)
             {
-                float distance = Vector2.Distance(transform.position, enemy.transform.position);
-                if (distance < shortestDistance && distance <= detectionRange)
-                {
-                    shortestDistance = distance;
-                    nearest = enemy;
-                }
+                shortestDistance = distance;
+                nearest = hit.gameObject;
             }
         }
         return nearest;
@@ -91,12 +93,11 @@ public class playerControl : MonoBehaviour
         }
     }
 
-    // playerControl.cs içinde eski OnCollisionEnter2D'yi bununla değiştir:
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Enemy"))
         {
-            Die();
+            //Die(); //if you comment this u are immortal
         }
     }
 

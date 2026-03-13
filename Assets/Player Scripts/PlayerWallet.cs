@@ -1,10 +1,10 @@
 using UnityEngine;
-using TMPro; // Para miktarını ekranda görmek için
+using TMPro;
 
 public class PlayerWallet : MonoBehaviour
 {
     public int currentCoins = 0;
-    public TextMeshProUGUI coinText; // Inspector'dan Coin sayısını gösteren Text'i sürükle
+    public TextMeshProUGUI coinText;
 
     void Start()
     {

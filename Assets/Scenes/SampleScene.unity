@@ -440,7 +440,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de09bc2df27efbe42b201bac158901b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  bulletPrefab: {fileID: 0}
+  bulletPrefab: {fileID: 2329744826869865588, guid: a9838eb297ac4f3498e14eab7dfdb75a, type: 3}
   poolSize: 40
   pooledBullets: []
 --- !u!1 &380735383
@@ -1438,11 +1438,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad0206c1eb37c2a4999d3e901c0b8784, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::playerControl
-  bulletPrefab: {fileID: 2329744826869865588, guid: a9838eb297ac4f3498e14eab7dfdb75a, type: 3}
   moveSpeed: 5
   fireRate: 0.2
   damageBoost: 1
   detectionRange: 7
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 256
   audioSource: {fileID: 2093786022}
   shootSound: {fileID: 8300000, guid: 37dcd4c9194c8b140b2b2acd7a5b961b, type: 3}
 --- !u!114 &1171084843
