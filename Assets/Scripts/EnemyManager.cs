@@ -6,14 +6,12 @@ public class EnemyManager : MonoBehaviour
     public static EnemyManager Instance;
     
     [SerializeField] private List<Enemy> activeEnemies = new List<Enemy>();
-    [SerializeField] private LayerMask enemyLayer; // Müfettiş (Inspector) panelinden "Enemy" seçilmeli
-    
     private Transform player;
+
+    // Performans için önceden ayrılmış dizi (Her karede yeni dizi oluşturmaz)
     private Collider2D[] closeNeighbors = new Collider2D[5]; 
-    
-    [Header("Movement Settings")]
-    [SerializeField] private float separationDistance = 0.6f;
-    [SerializeField] private float separationWeight = 2f;
+    [SerializeField] private float separationDistance = 0.7f;
+    [SerializeField] private float separationWeight = 1.5f;
 
     void Awake()
     {
@@ -22,6 +20,7 @@ public class EnemyManager : MonoBehaviour
         if (p != null) player = p.transform;
     }
 
+    // Fizik tabanlı hareketler FixedUpdate içinde yapılmalıdır
     void FixedUpdate()
     {
         if (player == null) return;
@@ -40,35 +39,34 @@ public class EnemyManager : MonoBehaviour
             if (rb == null) continue;
 
             Vector2 currentPos = e.transform.position;
+            
+            // 1. Oyuncuya gidiş yönü
             Vector2 moveDirection = ((Vector2)player.position - currentPos).normalized;
-            Vector2 separationForce = Vector2.zero;
 
-            // OPTİMİZASYON: Sadece 'enemyLayer' içindeki objeleri tara
-            int neighborCount = Physics2D.OverlapCircleNonAlloc(
-                currentPos, 
-                separationDistance, 
-                closeNeighbors, 
-                enemyLayer
-            );
+            // 2. PERFORMANSLI AYRILMA (Sadece çok yakındaki 5 komşuya bakar)
+            Vector2 separationForce = Vector2.zero;
+            int neighborCount = Physics2D.OverlapCircleNonAlloc(currentPos, separationDistance, closeNeighbors);
 
             for (int j = 0; j < neighborCount; j++)
             {
                 Collider2D neighbor = closeNeighbors[j];
-                // Kendisini listeden elemek için basit referans kontrolü
                 if (neighbor.gameObject != e.gameObject)
                 {
                     Vector2 diff = currentPos - (Vector2)neighbor.transform.position;
-                    float distSqr = diff.sqrMagnitude; // Performans için: Karekök almayan uzaklık
-
-                    if (distSqr > 0 && distSqr < separationDistance * separationDistance)
+                    float dist = diff.magnitude;
+                    if (dist > 0)
                     {
-                        // Uzaklığın karesine bölmek, çok yakın olanların daha sert itilmesini sağlar
-                        separationForce += diff.normalized / (distSqr + 0.1f);
+                        // Yakınlık arttıkça itme kuvveti artar
+                        separationForce += diff.normalized / dist;
                     }
                 }
             }
 
+            // 3. Kuvvetleri Birleştir
+            // .normalized yapmıyoruz ki ayrılma kuvveti gerektiğinde oyuncuya gitme isteğini yenebilsin
             Vector2 finalMovement = moveDirection + (separationForce * separationWeight);
+            
+            // 4. Hızı Uygula
             rb.linearVelocity = finalMovement.normalized * e.speed;
         }
     }
