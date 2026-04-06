@@ -552,11 +552,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyManager
   activeEnemies: []
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 256
-  separationDistance: 1.5
-  separationWeight: 2.22
+  separationDistance: 1.1
+  separationWeight: 1.5
 --- !u!1 &481331907
 GameObject:
   m_ObjectHideFlags: 0

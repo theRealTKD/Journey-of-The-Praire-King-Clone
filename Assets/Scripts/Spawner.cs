@@ -29,8 +29,8 @@ public class EnemySpawner : MonoBehaviour
             SpawnEnemy();
             
             // Zorluğu artık activeGameTime üzerinden hesaplıyoruz
-            //currentSpawnRate = Mathf.Max(minSpawnRate, initialSpawnRate - (activeGameTime * difficultyCurve));
-            currentSpawnRate = 0.01f; //DON'T
+            currentSpawnRate = Mathf.Max(minSpawnRate, initialSpawnRate - (activeGameTime * difficultyCurve));
+            //currentSpawnRate = 0.01f; //DON'T
             yield return new WaitForSeconds(currentSpawnRate);
         }
     }
