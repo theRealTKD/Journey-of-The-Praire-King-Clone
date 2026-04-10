@@ -17,15 +17,15 @@ public class PlayerWallet : MonoBehaviour
         UpdateUI();
     }
 
-    public bool SpendCoins(int amount)
+    public bool SpendCoins(int amount)//Henüz sandıkları eklemediğimden bu fonksiyonun işlevi yok
     {
         if (currentCoins >= amount)
         {
             currentCoins -= amount;
             UpdateUI();
-            return true; // Para yetti, işlem tamam
+            return true; //Para yetti
         }
-        return false; // Para yetmedi!
+        return false; //Para yetmedi
     }
 
     void UpdateUI()

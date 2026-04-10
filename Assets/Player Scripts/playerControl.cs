@@ -8,7 +8,6 @@ public class playerControl : MonoBehaviour
     public float moveSpeed = 5f;
     public float fireRate = 0.2f;
     public float damageBoost = 1f;
-    [Header("Otomatik Atış Ayarları")]
     public float detectionRange = 7f;
     public LayerMask enemyLayer;
 
@@ -59,7 +58,7 @@ public class playerControl : MonoBehaviour
 
         foreach (var hit in hits)
         {
-            // Havuzda pasif olanları (ölenleri) es geç
+            // Havuzda pasif olanları es geç
             if (!hit.gameObject.activeInHierarchy) continue;
 
             float distance = Vector2.Distance(transform.position, hit.transform.position);
@@ -97,7 +96,7 @@ public class playerControl : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            //Die(); //if you comment this u are immortal
+            Die(); //if you comment this u are immortal
         }
     }
 

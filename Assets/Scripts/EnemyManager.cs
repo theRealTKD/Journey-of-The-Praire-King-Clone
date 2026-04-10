@@ -5,10 +5,9 @@ public class EnemyManager : MonoBehaviour
 {
     public static EnemyManager Instance;
     
-    [SerializeField] private List<Enemy> activeEnemies = new List<Enemy>();
+    [SerializeField] private List<Enemy> activeEnemies = new List<Enemy>();//aktif düşmanlar listesi
     private Transform player;
 
-    // Performans için önceden ayrılmış dizi (Her karede yeni dizi oluşturmaz)
     private Collider2D[] closeNeighbors = new Collider2D[5]; 
     [SerializeField] private float separationDistance = 0.7f;
     [SerializeField] private float separationWeight = 1.5f;
@@ -25,7 +24,7 @@ public class EnemyManager : MonoBehaviour
     {
         if (player == null) return;
 
-        for (int i = activeEnemies.Count - 1; i >= 0; i--)
+        for (int i = activeEnemies.Count - 1; i >= 0; i--)//her bi aktif düşman için
         {
             Enemy e = activeEnemies[i];
 

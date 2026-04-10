@@ -3,7 +3,7 @@ using UnityEngine;
 public class UpgradeManager : MonoBehaviour
 {
     public GameObject levelUpPanel;
-    public playerControl player; // Inspector'dan Player objesini sürükle
+    public playerControl player;
 
     public void OpenUpgradePanel()
     {
@@ -11,7 +11,7 @@ public class UpgradeManager : MonoBehaviour
         Time.timeScale = 0f; 
     }
 
-    // Buton 1: Hareket Hızı Artışı
+    //Hareket Hızı Artışı
     public void UpgradeSpeed()
     {
         player.moveSpeed += 1.5f; // Hızı 1.5 birim artır
@@ -19,20 +19,20 @@ public class UpgradeManager : MonoBehaviour
         ClosePanel();
     }
 
-    // Buton 2: Ateş Hızı (Fire Rate) Artışı
+    //Ateş Hızı Artışı
     public void UpgradeFireRate()
     {
         // FireRate bekleme süresi olduğu için onu azaltmak daha hızlı ateş etmektir
         player.fireRate -= 0.03f; 
-        if (player.fireRate < 0.05f) player.fireRate = 0.05f; // Sınır koyalım ki makine tüfeğe dönmesin
+        if (player.fireRate < 0.01f) player.fireRate = 0.01f; // Negatif olamasın.
         Debug.Log("Yeni Ateş Hızı: " + player.fireRate);
         ClosePanel();
     }
 
-    // Buton 3: Hasar Artışı
+    //Hasar Artışı
     public void UpgradeDamage()
     {
-        player.damageBoost += 0.5f; // Hasar çarpanını %50 artırır
+        player.damageBoost += 0.5f; //plus hasar
         Debug.Log("Yeni Hasar Çarpanı: " + player.damageBoost);
         ClosePanel();
     }
