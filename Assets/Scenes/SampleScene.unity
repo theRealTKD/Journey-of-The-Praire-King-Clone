@@ -640,7 +640,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1309057389}
         m_TargetAssemblyTypeName: UpgradeManager, Assembly-CSharp
-        m_MethodName: UpgradeDamage
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

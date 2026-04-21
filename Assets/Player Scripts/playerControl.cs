@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-public class playerControl : MonoBehaviour
+public class playerControl : MonoBehaviour, IAcceptUpgrades
 {
     [Header("Ayarlar")]
     public float moveSpeed = 5f;
@@ -18,6 +18,11 @@ public class playerControl : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip shootSound;
 
+
+    public void Accept(IUpgradeVisitor visitor)
+    {
+        visitor.Visit(this);
+    }
     public void OnMovement(InputValue value)
     {
         moveInput = value.Get<Vector2>();
@@ -27,6 +32,17 @@ public class playerControl : MonoBehaviour
     {
         MovePlayer();
         HandleAutoShoot();
+
+        // TEST İÇİN: 1 tuşuna basınca hız, 2 tuşuna basınca ateş hızı artar
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            Accept(new SpeedUpgrade());
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            Accept(new FireRateUpgrade());
+        }
     }
 
     void MovePlayer()

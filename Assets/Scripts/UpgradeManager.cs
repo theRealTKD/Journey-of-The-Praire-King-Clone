@@ -11,29 +11,23 @@ public class UpgradeManager : MonoBehaviour
         Time.timeScale = 0f; 
     }
 
-    //Hareket Hızı Artışı
-    public void UpgradeSpeed()
+    public void OnSpeedBtnClick()//Geçiçi Sistem
     {
-        player.moveSpeed += 1.5f; // Hızı 1.5 birim artır
-        Debug.Log("Yeni Hız: " + player.moveSpeed);
-        ClosePanel();
+        ApplyUpgrade(new SpeedUpgrade());
     }
 
-    //Ateş Hızı Artışı
-    public void UpgradeFireRate()
+    public void OnFireRateBtnClick()//Geçiçi Sistem
     {
-        // FireRate bekleme süresi olduğu için onu azaltmak daha hızlı ateş etmektir
-        player.fireRate -= 0.03f; 
-        if (player.fireRate < 0.01f) player.fireRate = 0.01f; // Negatif olamasın.
-        Debug.Log("Yeni Ateş Hızı: " + player.fireRate);
-        ClosePanel();
+        ApplyUpgrade(new FireRateUpgrade());
     }
 
-    //Hasar Artışı
-    public void UpgradeDamage()
+    public void OnDamageBtnClick()//Geçiçi Sistem
     {
-        player.damageBoost += 0.5f; //plus hasar
-        Debug.Log("Yeni Hasar Çarpanı: " + player.damageBoost);
+        ApplyUpgrade(new DamageUpgrade()); 
+    }
+    public void ApplyUpgrade(IUpgradeVisitor chosenUpgrade)
+    {
+        player.Accept(chosenUpgrade);
         ClosePanel();
     }
 
