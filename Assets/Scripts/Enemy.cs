@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
     public float currentHealth; // 'public' yaptık, Manager veya Mermi görebilsin
     private SpriteRenderer spriteRenderer;
     private float initialSpeed;
+    public float damage = 10;
 
     void Awake()
     {

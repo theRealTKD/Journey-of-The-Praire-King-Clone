@@ -640,7 +640,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1309057389}
         m_TargetAssemblyTypeName: UpgradeManager, Assembly-CSharp
-        m_MethodName: 
+        m_MethodName: OnDamageBtnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1066,7 +1066,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1309057389}
         m_TargetAssemblyTypeName: UpgradeManager, Assembly-CSharp
-        m_MethodName: UpgradeSpeed
+        m_MethodName: OnSpeedBtnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2426,7 +2426,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1309057389}
         m_TargetAssemblyTypeName: UpgradeManager, Assembly-CSharp
-        m_MethodName: UpgradeFireRate
+        m_MethodName: OnFireRateBtnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2777,6 +2777,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 158007601141173929, guid: 0a452dfb1d17ce14983d72e6db211835, type: 3}
+      propertyPath: value
+      value: 1000
+      objectReference: {fileID: 0}
     - target: {fileID: 158007601141173929, guid: 0a452dfb1d17ce14983d72e6db211835, type: 3}
       propertyPath: xpAmount
       value: 10

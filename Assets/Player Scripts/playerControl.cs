@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -18,6 +19,11 @@ public class playerControl : MonoBehaviour, IAcceptUpgrades
     public AudioSource audioSource;
     public AudioClip shootSound;
 
+    [Header("Can Ayarları")]
+    public float maxHealth = 100f;
+    public float currentHealth = 100f;
+    public float invincibilityTime = 0.5f;
+    private float nextDamageTime;
 
     public void Accept(IUpgradeVisitor visitor)
     {
@@ -59,7 +65,7 @@ public class playerControl : MonoBehaviour, IAcceptUpgrades
 
             if (target != null)
             {
-                Shoot(target.transform.position);
+                //Shoot(target.transform.position);
                 nextFireTime = Time.time + fireRate;
             }
         }
@@ -108,11 +114,34 @@ public class playerControl : MonoBehaviour, IAcceptUpgrades
         }
     }
 
+    public void TakeDamage(float damage)
+    {
+        if(Time.time < nextDamageTime)
+        {
+            return;
+        }
+
+        currentHealth -= damage;
+        nextDamageTime = Time.time + invincibilityTime;
+
+        Debug.Log("Can azaldı! Kalan canın: "+ currentHealth);
+
+        if(currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Enemy"))
         {
-            Die(); //if you comment this u are immortal
+            Enemy enemyScript = other.GetComponent<Enemy>();
+
+            if(enemyScript != null)
+            {
+                TakeDamage(enemyScript.damage);
+            }
         }
     }
 
