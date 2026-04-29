@@ -110,6 +110,7 @@ MonoBehaviour:
   baseHealth: 1
   xpPrefab: {fileID: 7383264682764695924, guid: 0a452dfb1d17ce14983d72e6db211835, type: 3}
   currentHealth: 0
+  damage: 10
 --- !u!61 &8535542387558461160
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -180,6 +181,6 @@ Rigidbody2D:
     serializedVersion: 2
     m_Bits: 0
   m_Interpolate: 0
-  m_SleepingMode: 0
+  m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4

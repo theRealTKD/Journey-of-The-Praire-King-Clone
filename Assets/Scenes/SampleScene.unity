@@ -551,6 +551,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce1275c7b0cf45e4d85346132b5ab183, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyManager
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 256
   activeEnemies: []
   separationDistance: 1.1
   separationWeight: 1.5
@@ -1388,10 +1391,14 @@ GameObject:
   - component: {fileID: 1171084840}
   - component: {fileID: 1171084842}
   - component: {fileID: 1171084846}
-  - component: {fileID: 1171084844}
+  - component: {fileID: 1171084847}
   - component: {fileID: 1171084843}
   - component: {fileID: 1171084845}
-  - component: {fileID: 1171084847}
+  - component: {fileID: 1171084849}
+  - component: {fileID: 1171084848}
+  - component: {fileID: 1171084851}
+  - component: {fileID: 1171084850}
+  - component: {fileID: 1171084852}
   m_Layer: 6
   m_Name: praireKing
   m_TagString: Player
@@ -1482,18 +1489,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1171084839}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad0206c1eb37c2a4999d3e901c0b8784, type: 3}
+  m_Script: {fileID: 11500000, guid: 1798a598777a5f64e8ebc540bb0dfa76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::playerControl
-  moveSpeed: 5
-  fireRate: 0.2
-  damageBoost: 1
-  detectionRange: 7
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 256
-  audioSource: {fileID: 2093786022}
-  shootSound: {fileID: 8300000, guid: 37dcd4c9194c8b140b2b2acd7a5b961b, type: 3}
+  health: {fileID: 1171084851}
+  movement: {fileID: 1171084848}
+  shooting: {fileID: 1171084850}
 --- !u!114 &1171084843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1524,33 +1525,6 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!50 &1171084844
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1171084839}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 4
 --- !u!61 &1171084845
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1628,6 +1602,99 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerWallet
   currentCoins: 0
   coinText: {fileID: 1778575432}
+--- !u!114 &1171084848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1171084839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aeb279684e9bc634eba1fcd276037a3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
+  moveSpeed: 5
+--- !u!114 &1171084849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1171084839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79b4b752643146041ba308598259e721, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInputHandler
+--- !u!114 &1171084850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1171084839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14fa0bf56ee3e484a99908e63f36c5d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerShooting
+  fireRate: 0.2
+  detectionRange: 7
+  damageBoost: 1
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  audioSource: {fileID: 2093786022}
+  shootSound: {fileID: 8300000, guid: 37dcd4c9194c8b140b2b2acd7a5b961b, type: 3}
+--- !u!114 &1171084851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1171084839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b896ff676593ef7438b95954ca35de4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
+  maxHealth: 100
+  currentHealth: 100
+  invincibilityTime: 0.5
+  OnHealthChange:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!50 &1171084852
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1171084839}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1293112052
 GameObject:
   m_ObjectHideFlags: 0
