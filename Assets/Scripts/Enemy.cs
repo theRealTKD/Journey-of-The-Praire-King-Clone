@@ -25,8 +25,8 @@ public class Enemy : MonoBehaviour
         float adilSure = (spawner != null) ? spawner.activeGameTime : 0f;
 
         speed = initialSpeed;
-        float difficultyBonus = Mathf.Floor(adilSure / 60f) * 0.5f;
-        health.maxHealth = baseHealth + difficultyBonus;
+        float difficultyBonus = Mathf.Floor(adilSure / 60f) * 0.2f;
+        health.maxHealth = baseHealth + difficultyBonus/5;
         health.currentHealth = health.maxHealth;
 
         if (adilSure >= 420f) { spriteRenderer.color = Color.black; speed += 3f; }
