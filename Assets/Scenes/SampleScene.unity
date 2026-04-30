@@ -474,8 +474,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   enemyPrefab: {fileID: 7495544180249146763, guid: 25c4cbba3bb184142a56c7e46c18d94d, type: 3}
-  initialSpawnRate: 1.5
-  difficultyCurve: 0.01
+  initialSpawnRate: 1
+  difficultyCurve: 0.02
   minSpawnRate: 0.05
   spawnDistance: 20
   activeGameTime: 0
